@@ -1,7 +1,7 @@
 package config
 
 import (
-	"log"
+	"errors"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -24,14 +24,16 @@ type dbConfig struct {
 }
 
 type httpServer struct {
-	HttpHost string `env:"HTTP_HOST"`
-	HttpPort string `env:"HTTP_PORT"`
+	HttpHost  string `env:"HTTP_HOST"`
+	HttpPort  string `env:"HTTP_PORT"`
+	AppName   string `env:"APP_NAME"`
+	AppHeader string `env:"APP_HEADER"`
 }
 
-func GetConfig() *Config {
+func GetConfig() (*Config, error) {
 	// .env faýlyny yüklemek
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+		return nil, errors.New("error loading .env file")
 	}
 
 	dbconfig := dbConfig{
@@ -45,12 +47,14 @@ func GetConfig() *Config {
 	}
 
 	httpServerConfig := httpServer{
-		HttpHost: os.Getenv("HTTP_HOST"),
-		HttpPort: os.Getenv("HTTP_PORT"),
+		HttpHost:  os.Getenv("HTTP_HOST"),
+		HttpPort:  os.Getenv("HTTP_PORT"),
+		AppName:   os.Getenv("APP_NAME"),
+		AppHeader: os.Getenv("APP_HEADER"),
 	}
 
 	return &Config{
 		DbConfig:   dbconfig,
 		HttpServer: httpServerConfig,
-	}
+	}, nil
 }
