@@ -17,9 +17,13 @@ func NewAuthRepository(db *gorm.DB) AuthRepository {
 }
 
 func (authRepo authRepositoryImp) Create(user models.User) error {
-	panic("auth repo imp")
+	return authRepo.DB.Create(&user).Error
 }
 
 func (authRepo authRepositoryImp) GetByEmail(email string) (*models.User, error) {
-	panic("auth repo imp")
+	var user models.User
+	if err := authRepo.DB.Where("email=?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
 }

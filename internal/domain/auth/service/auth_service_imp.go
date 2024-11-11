@@ -3,7 +3,6 @@ package service
 import (
 	"github.com/phn00dev/go-task-manager/internal/domain/auth/dto"
 	"github.com/phn00dev/go-task-manager/internal/domain/auth/repository"
-
 )
 
 type authServiceImp struct {
