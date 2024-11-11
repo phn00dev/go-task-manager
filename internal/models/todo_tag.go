@@ -1,4 +1,4 @@
-package model
+package models
 
 type TodoTag struct {
 	TodoID int `json:"todo_id"`
