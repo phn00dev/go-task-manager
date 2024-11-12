@@ -1,6 +1,9 @@
 package service
 
 import (
+	"errors"
+
+	"github.com/phn00dev/go-task-manager/internal/domain/team/dto"
 	"github.com/phn00dev/go-task-manager/internal/domain/team/repository"
 	"github.com/phn00dev/go-task-manager/internal/models"
 )
@@ -16,21 +19,51 @@ func NewTeamService(repo repository.TeamRepository) TeamService {
 }
 
 func (teamService teamServiceImp) GetAllTeams() ([]models.Team, error) {
-	panic("team service imp")
+	teams, err := teamService.teamRepo.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	return teams, nil
 }
 
 func (teamService teamServiceImp) GetOneTeam(teamID int) (*models.Team, error) {
-	panic("team service imp")
+	if teamID == 0 {
+		return nil, errors.New("teamId not zero")
+	}
+	team, err := teamService.teamRepo.GetOne(teamID)
+	if err != nil {
+		return nil, err
+	}
+	return team, nil
 }
 
-func (teamService teamServiceImp) CreateTeam(team models.Team) error {
-	panic("team service imp")
+func (teamService teamServiceImp) CreateTeam(createRequest dto.CreateTeamRequest) error {
+	createTeam := models.Team{
+		TeamName: createRequest.TeamName,
+	}
+	return teamService.teamRepo.Create(createTeam)
 }
 
-func (teamService teamServiceImp) UpdateTeam(teamID int, team models.Team) error {
-	panic("team service imp")
+func (teamService teamServiceImp) UpdateTeam(teamID int, updateRequest dto.UpdateTeamRequest) error {
+	if teamID == 0 {
+		return errors.New("teamId not zero")
+	}
+	team, err := teamService.teamRepo.GetOne(teamID)
+	if err != nil {
+		return err
+	}
+	team.TeamName = updateRequest.TeamName
+	return teamService.teamRepo.Update(team.ID, *team)
+
 }
 
 func (teamService teamServiceImp) DeleteTeam(teamID int) error {
-	panic("team service imp")
+	if teamID == 0 {
+		return errors.New("teamId not zero")
+	}
+	team, err := teamService.teamRepo.GetOne(teamID)
+	if err != nil {
+		return err
+	}
+	return teamService.teamRepo.Delete(team.ID)
 }
