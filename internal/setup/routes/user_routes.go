@@ -4,7 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 
 	authConstructor "github.com/phn00dev/go-task-manager/internal/domain/auth/constructor"
+	"github.com/phn00dev/go-task-manager/internal/domain/team/constructor"
 	userConstructor "github.com/phn00dev/go-task-manager/internal/domain/user/constructor"
+
 )
 
 func UserRoutes(route *gin.Engine) {
@@ -23,6 +25,14 @@ func UserRoutes(route *gin.Engine) {
 			userRoute.GET("/update-profile", userConstructor.UserHandler.UpdateData)
 			userRoute.GET("/update-password", userConstructor.UserHandler.UpdatePassword)
 			userRoute.GET("/delete-profile", userConstructor.UserHandler.DeleteProfile)
+		}
+		teamRoute := v1.Group("/teams")
+		{
+			teamRoute.GET("/", constructor.TeamHandler.GetAll)
+			teamRoute.GET("/:teamID", constructor.TeamHandler.GetOne)
+			teamRoute.POST("/create", constructor.TeamHandler.Create)
+			teamRoute.PUT("/:teamID", constructor.TeamHandler.Update)
+			teamRoute.DELETE("/:teamID", constructor.TeamHandler.Delete)
 		}
 	}
 }
