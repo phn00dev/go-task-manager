@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/phn00dev/go-task-manager/internal/domain/user/service"
-
 )
 
 type userHandlerImp struct {
@@ -17,8 +16,8 @@ func NewUserHandler(service service.UserService) UserHandler {
 	}
 }
 
-func (userHandler userHandlerImp) GetUserProfile(ctx *gin.Context){
-	
+func (userHandler userHandlerImp) GetUserProfile(ctx *gin.Context) {
+
 }
 
 func (userHandler userHandlerImp) UpdateData(ctx *gin.Context) {
