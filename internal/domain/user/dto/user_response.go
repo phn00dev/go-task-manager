@@ -2,11 +2,13 @@ package dto
 
 import (
 	"github.com/phn00dev/go-task-manager/internal/models"
+
 )
 
 type UserProfileResponse struct {
 	ID        int    `json:"id"`
-	Name      string `json:"name"`
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
 	Email     string `json:"email"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
@@ -16,7 +18,8 @@ type UserProfileResponse struct {
 func NewUserProfileResponse(user *models.User) *UserProfileResponse {
 	return &UserProfileResponse{
 		ID:        user.ID,
-		Name:      user.Name,
+		Firstname: user.Firstname,
+		Lastname:  user.Lastname,
 		Email:     user.Email,
 		CreatedAt: user.CreatedAt.Format("02-01-2006 15:04:05"),
 		UpdatedAt: user.UpdatedAt.Format("02-01-2006 15:04:05"),

@@ -6,6 +6,7 @@ import (
 	"github.com/phn00dev/go-task-manager/internal/domain/user/dto"
 	"github.com/phn00dev/go-task-manager/internal/domain/user/repository"
 	passwordhash "github.com/phn00dev/go-task-manager/internal/utils/password_hash"
+
 )
 
 type userServiceImp struct {
@@ -42,7 +43,8 @@ func (userService userServiceImp) UpdateUser(userID int, updateRequest dto.Updat
 	if user.ID == 0 {
 		return errors.New("user  not found")
 	}
-	user.Name = updateRequest.Name
+	user.Firstname = updateRequest.Firstname
+	user.Lastname = updateRequest.Lastname
 	user.Email = updateRequest.Email
 	return userService.userRepo.Update(user.ID, *user)
 }
@@ -61,7 +63,7 @@ func (userService userServiceImp) UpdateUserPassword(userID int, request dto.Upd
 		return err
 	}
 	// check password
-	if err := passwordhash.CheckPasswordHash(request.OldPassword, user.Password); err != nil {
+	if err := passwordhash.CheckPasswordHash(request.OldPassword, user.PasswordHash); err != nil {
 		return errors.New("old password wrong")
 	}
 

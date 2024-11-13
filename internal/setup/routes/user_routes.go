@@ -3,21 +3,19 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 
-	authConstructor "github.com/phn00dev/go-task-manager/internal/domain/auth/constructor"
 	"github.com/phn00dev/go-task-manager/internal/domain/team/constructor"
 	userConstructor "github.com/phn00dev/go-task-manager/internal/domain/user/constructor"
-
 )
 
 func UserRoutes(route *gin.Engine) {
 	v1 := route.Group("/v1/api")
 	{
 		// auth routes
-		authRoute := v1.Group("/auth")
-		{
-			authRoute.POST("/register", authConstructor.AuthHandler.Register)
-			authRoute.POST("/register", authConstructor.AuthHandler.Login)
-		}
+		// authRoute := v1.Group("/auth")
+		// {
+		// 	authRoute.POST("/register", authConstructor.AuthHandler.Register)
+		// 	authRoute.POST("/register", authConstructor.AuthHandler.Login)
+		// }
 		// user profile routes
 		userRoute := v1.Group("/user")
 		{

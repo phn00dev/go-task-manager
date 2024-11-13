@@ -1,8 +1,9 @@
 package dto
 
 type UpdateUserRequest struct {
-	Name  string `json:"name" binding:"required,min=3,max=50"`
-	Email string `json:"email" binding:"required,email"`
+	Firstname string `json:"firstname" binding:"required,min=3,max=50"`
+	Lastname  string `json:"lastname" binding:"required,min=3,max=50"`
+	Email     string `json:"email" binding:"required,email"`
 }
 
 type UpdateUserPassword struct {
