@@ -10,7 +10,6 @@ const (
 	Done      TodoStatus = "done"
 	Paused    TodoStatus = "paused"
 	Cancelled TodoStatus = "cancelled"
-	Overdue   TodoStatus = "overdue"
 )
 
 // Todo struct represents the todos table

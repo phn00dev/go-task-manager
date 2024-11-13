@@ -4,15 +4,15 @@ CREATE TYPE TODO_STATUS AS ENUM ('new', 'working', 'done', 'paused', 'cancelled'
 
 -- admin table
 CREATE TABLE admins (
-    id SERIAL PRIMARY KEY, 
-    firtname VARCHAR(100) NOT NULL,
+    id SERIAL PRIMARY KEY,
+    firstname VARCHAR(100) NOT NULL,
     lastname VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     admin_role ADMIN_ROLE DEFAULT 'admin',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    last_login TIMESTAMP  DEFAULT CURRENT_TIMESTAMP
 );  
 
 -- user table
@@ -29,13 +29,14 @@ CREATE TABLE users (
 );
 
 -- team table
-CREATE TABLE teams (
-    id SERIAL PRIMARY KEY,
-    team_name VARCHAR(100) UNIQUE,
-    team_slug VARCHAR(120) UNIQUE,
-    team_status STATUS DEFAULT 'passive', 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE teams(
+    id          SERIAL PRIMARY KEY,
+    team_name   VARCHAR(100) UNIQUE,
+    admin_id    INTEGER,
+    team_status STATUS    DEFAULT 'passive',
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE CASCADE
 );
 
 -- user_teams table (many-to-many relationship between User and Team)

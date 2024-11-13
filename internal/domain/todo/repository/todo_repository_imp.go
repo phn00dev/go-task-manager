@@ -16,26 +16,29 @@ func NewTodoRepository(db *gorm.DB) TodoRepository {
 }
 
 func (t todoRepositoryImp) GetAll() ([]models.Todo, error) {
-	//TODO implement me
-	panic("implement me")
+	var todos []models.Todo
+	if err := t.DB.Find(&todos).Error; err != nil {
+		return nil, err
+	}
+	return todos, nil
 }
 
 func (t todoRepositoryImp) GetOne(id int) (*models.Todo, error) {
-	//TODO implement me
-	panic("implement me")
+	var todo models.Todo
+	if err := t.DB.Where("id = ?", id).First(&todo).Error; err != nil {
+		return nil, err
+	}
+	return &todo, nil
 }
 
 func (t todoRepositoryImp) Create(todo models.Todo) error {
-	//TODO implement me
-	panic("implement me")
+	return t.DB.Create(&todo).Error
 }
 
 func (t todoRepositoryImp) Update(todoID int, todo models.Todo) error {
-	//TODO implement me
-	panic("implement me")
+	return t.DB.Model(&models.Todo{}).Where("id = ?", todoID).Updates(&todo).Error
 }
 
 func (t todoRepositoryImp) Delete(todoID int) error {
-	//TODO implement me
-	panic("implement me")
+	return t.DB.Delete(&models.Todo{}, todoID).Error
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const SecretKeyAdmin = "JYUIiyiuhiJKH^$M)&NKJHjug(JL_)GR#%)MLKHjjsaQED"
+const SecretKeyAdmin = "JYUIiy@i$uhiJKH^$M)&NKJHju*g(JL_)GR#%)MLKHjj)saQED"
 
 type AdminClaims struct {
 	UUID      string `json:"uuid"`

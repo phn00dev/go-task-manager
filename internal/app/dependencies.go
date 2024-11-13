@@ -8,7 +8,6 @@ import (
 	"github.com/phn00dev/go-task-manager/pkg/config"
 	dbconnect "github.com/phn00dev/go-task-manager/pkg/database/db_connect"
 	httpclient "github.com/phn00dev/go-task-manager/pkg/http_client"
-
 )
 
 type Dependencies struct {
@@ -29,6 +28,12 @@ func GetDependencies() (*Dependencies, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// get seeder
+	//dbSeeder := seeders.NewDbSeeder(getDB)
+	//if err := dbSeeder.GetDBSeeder(); err != nil {
+	//	return nil, err
+	//}
 
 	// get httpClient
 	newHttpClient := httpclient.NewHttpClient()
