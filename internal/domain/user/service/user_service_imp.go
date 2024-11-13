@@ -5,6 +5,7 @@ import (
 
 	"github.com/phn00dev/go-task-manager/internal/domain/user/dto"
 	"github.com/phn00dev/go-task-manager/internal/domain/user/repository"
+	"github.com/phn00dev/go-task-manager/internal/models"
 	passwordhash "github.com/phn00dev/go-task-manager/internal/utils/password_hash"
 
 )
@@ -19,7 +20,26 @@ func NewUserService(repo repository.UserRepository) UserService {
 	}
 }
 
-func (userService userServiceImp) GetProfile(userID int) (*dto.UserProfileResponse, error) {
+func (userService userServiceImp) GetAll() ([]models.User, error) {
+	users, err := userService.userRepo.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+func (userService userServiceImp) Getone(userID int) (*models.User, error) {
+	if userID == 0 {
+		return nil, errors.New("user ID must not be zero")
+	}
+	user, err := userService.userRepo.GetOne(userID)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (userService userServiceImp) GetProfile(userID int) (*dto.UserResponse, error) {
 	if userID == 0 {
 		return nil, errors.New("user id not null")
 	}
@@ -27,7 +47,7 @@ func (userService userServiceImp) GetProfile(userID int) (*dto.UserProfileRespon
 	if err != nil {
 		return nil, err
 	}
-	userResponse := dto.NewUserProfileResponse(user)
+	userResponse := dto.NewUserResponse(user)
 	return userResponse, nil
 }
 

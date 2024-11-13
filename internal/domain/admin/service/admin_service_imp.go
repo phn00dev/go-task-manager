@@ -30,7 +30,7 @@ func (adminService adminServiceImp) GetAllAdmins() ([]models.Admin, error) {
 
 func (adminService adminServiceImp) GetOneAdmin(adminID int) (*models.Admin, error) {
 	if adminID == 0 {
-		return nil, errors.New("admin id not zero")
+		return nil, errors.New("admin ID must not be zero")
 	}
 	admin, err := adminService.adminRepo.GetOne(adminID)
 	if err != nil {
@@ -59,7 +59,7 @@ func (adminService adminServiceImp) CreateAdmin(createRequest dto.CreateAdminReq
 
 func (adminService adminServiceImp) UpdateAdmin(adminID int, updateRequest dto.UpdateAdminRequest) error {
 	if adminID == 0 {
-		return errors.New("admin id not zero")
+		return errors.New("admin ID must not be zero")
 	}
 	admin, err := adminService.adminRepo.GetOne(adminID)
 	if err != nil {
@@ -76,7 +76,7 @@ func (adminService adminServiceImp) UpdateAdmin(adminID int, updateRequest dto.U
 
 func (adminService adminServiceImp) DeleteAdmin(adminID int) error {
 	if adminID == 0 {
-		return errors.New("admin id not zero")
+		return errors.New("admin ID must not be zero")
 	}
 	admin, err := adminService.adminRepo.GetOne(adminID)
 	if err != nil {

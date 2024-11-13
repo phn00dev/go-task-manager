@@ -6,6 +6,7 @@ import (
 	"github.com/phn00dev/go-task-manager/internal/domain/team/dto"
 	"github.com/phn00dev/go-task-manager/internal/domain/team/repository"
 	"github.com/phn00dev/go-task-manager/internal/models"
+
 )
 
 type teamServiceImp struct {
@@ -28,7 +29,7 @@ func (teamService teamServiceImp) GetAllTeams() ([]models.Team, error) {
 
 func (teamService teamServiceImp) GetOneTeam(teamID int) (*models.Team, error) {
 	if teamID == 0 {
-		return nil, errors.New("teamId not zero")
+		return nil, errors.New("team ID must not be zero")
 	}
 	team, err := teamService.teamRepo.GetOne(teamID)
 	if err != nil {
@@ -39,27 +40,29 @@ func (teamService teamServiceImp) GetOneTeam(teamID int) (*models.Team, error) {
 
 func (teamService teamServiceImp) CreateTeam(createRequest dto.CreateTeamRequest) error {
 	createTeam := models.Team{
-		TeamName: createRequest.TeamName,
+		TeamName:   createRequest.TeamName,
+		TeamStatus: createRequest.TeamStatus,
 	}
 	return teamService.teamRepo.Create(createTeam)
 }
 
 func (teamService teamServiceImp) UpdateTeam(teamID int, updateRequest dto.UpdateTeamRequest) error {
 	if teamID == 0 {
-		return errors.New("teamId not zero")
+		return errors.New("team ID must not be zero")
 	}
 	team, err := teamService.teamRepo.GetOne(teamID)
 	if err != nil {
 		return err
 	}
 	team.TeamName = updateRequest.TeamName
+	team.TeamStatus = updateRequest.TeamStatus
 	return teamService.teamRepo.Update(team.ID, *team)
 
 }
 
 func (teamService teamServiceImp) DeleteTeam(teamID int) error {
 	if teamID == 0 {
-		return errors.New("teamId not zero")
+		return errors.New("team ID must not be zero")
 	}
 	team, err := teamService.teamRepo.GetOne(teamID)
 	if err != nil {

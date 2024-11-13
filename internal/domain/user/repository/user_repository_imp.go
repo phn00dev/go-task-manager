@@ -19,6 +19,22 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 	}
 }
 
+func (userRepo userRepositoryImp) GetAll() ([]models.User, error) {
+	var users []models.User
+	if err := userRepo.DB.Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+func (userRepo userRepositoryImp) GetOne(userID int) (*models.User, error) {
+	var user models.User
+	if err := userRepo.DB.First(&user, userID).Error; err!=nil{
+		return nil, err
+	}
+	return &user, nil
+}
+
 func (userRepo userRepositoryImp) GetUserByID(userID int) (*models.User, error) {
 	var user models.User
 	if err := userRepo.DB.First(&user, userID).Error; err != nil {
