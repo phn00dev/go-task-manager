@@ -12,4 +12,6 @@ type AdminService interface {
 	CreateAdmin(createRequest dto.CreateAdminRequest) error
 	UpdateAdmin(adminID int, updateRequest dto.UpdateAdminRequest) error
 	DeleteAdmin(adminID int) error
+	// admin auth
+	LoginAdmin(loginRequest dto.LoginRequest) (*dto.LoginAdminResponse, error)
 }

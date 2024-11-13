@@ -4,7 +4,6 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/phn00dev/go-task-manager/internal/models"
-
 )
 
 type adminRepositoryImp struct {
@@ -18,21 +17,37 @@ func NewAdminRepository(db *gorm.DB) AdminRepository {
 }
 
 func (adminRepo adminRepositoryImp) GetAll() ([]models.Admin, error) {
-	panic("admin repo imp")
+	var admins []models.Admin
+	if err := adminRepo.DB.Where("admin_role=?", "admin").Select("firstname", "lastname", "admin_role", "email").Find(&admins).Error; err != nil {
+		return nil, err
+	}
+	return admins, nil
 }
 
 func (adminRepo adminRepositoryImp) GetOne(adminID int) (*models.Admin, error) {
-	panic("admin repo imp")
+	var admin models.Admin
+	if err := adminRepo.DB.First(&admin, adminID).Error; err != nil {
+		return nil, err
+	}
+	return &admin, nil
 }
 
 func (adminRepo adminRepositoryImp) Create(admin models.Admin) error {
-	panic("admin repo imp")
+	return adminRepo.DB.Create(&admin).Error
 }
 
 func (adminRepo adminRepositoryImp) Update(adminID int, admin models.Admin) error {
-	panic("admin repo imp")
+	return adminRepo.DB.Model(&models.Admin{}).Where("id=?", adminID).Updates(admin).Error
 }
 
 func (adminRepo adminRepositoryImp) Delete(adminID int) error {
-	panic("admin repo imp")
+	return adminRepo.DB.Where("id=?", adminID).Delete(&models.Admin{}).Error
+}
+
+func (adminRepo adminRepositoryImp) GetAdminByEmail(email string) (*models.Admin, error) {
+	var admin models.Admin
+	if err := adminRepo.DB.Where("email=?", email).First(&admin).Error; err != nil {
+		return nil, err
+	}
+	return &admin, nil
 }
