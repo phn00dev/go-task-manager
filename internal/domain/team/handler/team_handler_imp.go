@@ -10,7 +10,6 @@ import (
 	"github.com/phn00dev/go-task-manager/internal/domain/team/service"
 	bindandvalidate "github.com/phn00dev/go-task-manager/internal/utils/bind_and_validate"
 	"github.com/phn00dev/go-task-manager/internal/utils/response"
-
 )
 
 type teamHandlerImp struct {
@@ -29,7 +28,8 @@ func (teamHandler teamHandlerImp) GetAll(ctx *gin.Context) {
 		response.Error(ctx, http.StatusNotFound, "teams not found", err.Error())
 		return
 	}
-	response.Success(ctx, http.StatusOK, "all teams", teams)
+	teamResponses := dto.GetAllTeamResponses(teams)
+	response.Success(ctx, http.StatusOK, "all teams", teamResponses)
 }
 
 func (teamHandler teamHandlerImp) GetOne(ctx *gin.Context) {
@@ -40,7 +40,8 @@ func (teamHandler teamHandlerImp) GetOne(ctx *gin.Context) {
 		response.Error(ctx, http.StatusNotFound, "user not found", err.Error())
 		return
 	}
-	response.Success(ctx, http.StatusOK, "get team", team)
+	teamResponse := dto.GetOneTeamResponse(team)
+	response.Success(ctx, http.StatusOK, "get team", teamResponse)
 }
 
 func (teamHandler teamHandlerImp) Create(ctx *gin.Context) {

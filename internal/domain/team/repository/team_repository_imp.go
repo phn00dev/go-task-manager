@@ -18,15 +18,18 @@ func NewTeamRepository(db *gorm.DB) TeamRepository {
 
 func (teamRepo teamRepositoryImp) GetAll() ([]models.Team, error) {
 	var teams []models.Team
-	if err := teamRepo.DB.Order("id desc").Find(&teams).Error; err != nil {
+	if err := teamRepo.DB.Order("id desc").Preload("Admin", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id")
+	}).Find(&teams).Error; err != nil {
 		return nil, err
 	}
+
 	return teams, nil
 }
 
 func (teamRepo teamRepositoryImp) GetOne(teamID int) (*models.Team, error) {
 	var team models.Team
-	if err := teamRepo.DB.First(&team, teamID).Error; err != nil {
+	if err := teamRepo.DB.Preload("Admin").First(&team, teamID).Error; err != nil {
 		return nil, err
 	}
 	return &team, nil

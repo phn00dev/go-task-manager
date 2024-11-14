@@ -9,4 +9,5 @@ type Team struct {
 	AdminID    int       `json:"admin_id"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
+	Admin      Admin     `json:"admin"`
 }

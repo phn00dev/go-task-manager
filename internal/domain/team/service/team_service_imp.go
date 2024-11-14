@@ -3,19 +3,21 @@ package service
 import (
 	"errors"
 
+	adminRepository "github.com/phn00dev/go-task-manager/internal/domain/admin/repository"
 	"github.com/phn00dev/go-task-manager/internal/domain/team/dto"
 	"github.com/phn00dev/go-task-manager/internal/domain/team/repository"
 	"github.com/phn00dev/go-task-manager/internal/models"
-
 )
 
 type teamServiceImp struct {
-	teamRepo repository.TeamRepository
+	teamRepo  repository.TeamRepository
+	adminRepo adminRepository.AdminRepository
 }
 
-func NewTeamService(repo repository.TeamRepository) TeamService {
+func NewTeamService(repo repository.TeamRepository, adminRepo adminRepository.AdminRepository) TeamService {
 	return teamServiceImp{
-		teamRepo: repo,
+		teamRepo:  repo,
+		adminRepo: adminRepo,
 	}
 }
 
@@ -39,10 +41,17 @@ func (teamService teamServiceImp) GetOneTeam(teamID int) (*models.Team, error) {
 }
 
 func (teamService teamServiceImp) CreateTeam(createRequest dto.CreateTeamRequest) error {
+
+	// get admin
+	admin, err := teamService.adminRepo.GetOne(createRequest.AdminID)
+	if err != nil {
+		return errors.New("admin not found")
+	}
+
 	createTeam := models.Team{
 		TeamName:   createRequest.TeamName,
 		TeamStatus: createRequest.TeamStatus,
-		AdminID:    createRequest.AdminID,
+		AdminID:    admin.ID,
 	}
 	return teamService.teamRepo.Create(createTeam)
 }
@@ -55,9 +64,15 @@ func (teamService teamServiceImp) UpdateTeam(teamID int, updateRequest dto.Updat
 	if err != nil {
 		return err
 	}
+	// get admin
+	admin, err := teamService.adminRepo.GetOne(updateRequest.AdminID)
+	if err != nil {
+		return errors.New("admin not found")
+	}
+
 	team.TeamName = updateRequest.TeamName
 	team.TeamStatus = updateRequest.TeamStatus
-	team.AdminID = updateRequest.AdminID
+	team.AdminID = admin.ID
 	return teamService.teamRepo.Update(team.ID, *team)
 
 }

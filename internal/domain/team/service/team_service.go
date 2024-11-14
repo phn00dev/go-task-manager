@@ -3,7 +3,6 @@ package service
 import (
 	"github.com/phn00dev/go-task-manager/internal/domain/team/dto"
 	"github.com/phn00dev/go-task-manager/internal/models"
-
 )
 
 type TeamService interface {
