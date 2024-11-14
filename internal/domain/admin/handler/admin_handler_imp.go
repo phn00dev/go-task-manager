@@ -90,7 +90,7 @@ func (adminHandler adminHandlerImp) Delete(ctx *gin.Context) {
 
 func (adminHandler adminHandlerImp) LoginAdmin(ctx *gin.Context) {
 	var loginRequest dto.LoginRequest
-	if !bindandvalidate.BindAndValidate(ctx, loginRequest) {
+	if !bindandvalidate.BindAndValidate(ctx, &loginRequest) {
 		return
 	}
 	// admin login service

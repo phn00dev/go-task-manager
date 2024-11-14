@@ -18,7 +18,7 @@ func NewTeamRepository(db *gorm.DB) TeamRepository {
 
 func (teamRepo teamRepositoryImp) GetAll() ([]models.Team, error) {
 	var teams []models.Team
-	if err := teamRepo.DB.Find(&teams).Error; err != nil {
+	if err := teamRepo.DB.Order("id desc").Find(&teams).Error; err != nil {
 		return nil, err
 	}
 	return teams, nil

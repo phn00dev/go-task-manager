@@ -1,8 +1,6 @@
 package dto
 
 import (
-	"time"
-
 	"github.com/phn00dev/go-task-manager/internal/models"
 )
 
@@ -19,7 +17,6 @@ type AdminResponse struct {
 
 func GetAllAdminResponses(admins []models.Admin) []AdminResponse {
 	var adminResponses []AdminResponse
-
 	for _, admin := range admins {
 		adminResponse := GetOneAdminResponse(&admin)
 		adminResponses = append(adminResponses, *adminResponse)
@@ -28,10 +25,11 @@ func GetAllAdminResponses(admins []models.Admin) []AdminResponse {
 }
 
 func GetOneAdminResponse(admin *models.Admin) *AdminResponse {
-	turkmenistanLocation, err := time.LoadLocation("Asia/Ashgabat")
-	if err != nil {
-
-		turkmenistanLocation = time.UTC
+	var lastLogin string
+	if admin.LastLogin != nil {
+		lastLogin = admin.LastLogin.Format("02-01-2006 15:04:05")
+	} else {
+		lastLogin = "Not Logged In"
 	}
 	return &AdminResponse{
 		ID:        admin.ID,
@@ -39,8 +37,8 @@ func GetOneAdminResponse(admin *models.Admin) *AdminResponse {
 		Lastname:  admin.Lastname,
 		Email:     admin.Email,
 		AdminRole: admin.AdminRole,
-		CreatedAt: admin.CreatedAt.In(turkmenistanLocation).Format("02-01-2006 15:04:05"),
-		UpdatedAt: admin.UpdatedAt.In(turkmenistanLocation).Format("02-01-2006 15:04:05"),
-		LastLogin: admin.LastLogin.In(turkmenistanLocation).Format("02-01-2006 15:04:05"),
+		CreatedAt: admin.CreatedAt.Format("02-01-2006 15:04:05"),
+		UpdatedAt: admin.UpdatedAt.Format("02-01-2006 15:04:05"),
+		LastLogin: lastLogin,
 	}
 }

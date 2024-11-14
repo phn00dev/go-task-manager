@@ -14,6 +14,7 @@ func SuperAdminMiddleware() gin.HandlerFunc {
 		if authHeader == "" {
 			response.Error(ctx, http.StatusUnauthorized, "error", "Authorization header required")
 			ctx.AbortWithStatus(401)
+			return
 		}
 		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 		if tokenString == authHeader {

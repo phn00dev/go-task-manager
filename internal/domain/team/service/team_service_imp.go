@@ -42,6 +42,7 @@ func (teamService teamServiceImp) CreateTeam(createRequest dto.CreateTeamRequest
 	createTeam := models.Team{
 		TeamName:   createRequest.TeamName,
 		TeamStatus: createRequest.TeamStatus,
+		AdminID:    createRequest.AdminID,
 	}
 	return teamService.teamRepo.Create(createTeam)
 }
@@ -56,6 +57,7 @@ func (teamService teamServiceImp) UpdateTeam(teamID int, updateRequest dto.Updat
 	}
 	team.TeamName = updateRequest.TeamName
 	team.TeamStatus = updateRequest.TeamStatus
+	team.AdminID = updateRequest.AdminID
 	return teamService.teamRepo.Update(team.ID, *team)
 
 }

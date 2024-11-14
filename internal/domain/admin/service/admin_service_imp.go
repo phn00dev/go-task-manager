@@ -2,12 +2,12 @@ package service
 
 import (
 	"errors"
-
 	"github.com/phn00dev/go-task-manager/internal/domain/admin/dto"
 	"github.com/phn00dev/go-task-manager/internal/domain/admin/repository"
 	"github.com/phn00dev/go-task-manager/internal/models"
 	passwordhash "github.com/phn00dev/go-task-manager/internal/utils/password_hash"
 	admintoken "github.com/phn00dev/go-task-manager/pkg/jwt_token/adminToken"
+	"time"
 )
 
 type adminServiceImp struct {
@@ -89,21 +89,25 @@ func (adminService adminServiceImp) LoginAdmin(loginRequest dto.LoginRequest) (*
 	// get admin
 	admin, err := adminService.adminRepo.GetAdminByEmail(loginRequest.Email)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("email or password is wrong")
 	}
 
 	// check password
 	if err := passwordhash.CheckPasswordHash(loginRequest.Password, admin.PasswordHash); err != nil {
-		return nil, err
+		return nil, errors.New("email or password is wrong")
 	}
-
 	// generate token
 	accessToken, err := admintoken.GenerateAdminToken(admin.ID, admin.AdminRole)
 	if err != nil {
 		return nil, err
 	}
-	// login response
-	loginResponse := dto.NewLoginAdminResponse(admin, *accessToken)
 
+	// update lastLogin time
+	timeNow := time.Now()
+	admin.LastLogin = &timeNow
+	if err := adminService.adminRepo.Update(admin.ID, *admin); err != nil {
+		return nil, err
+	}
+	loginResponse := dto.NewLoginAdminResponse(admin, accessToken)
 	return loginResponse, nil
 }

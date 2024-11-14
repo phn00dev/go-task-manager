@@ -5,7 +5,6 @@ import (
 
 	"github.com/phn00dev/go-task-manager/internal/setup/routes"
 	"github.com/phn00dev/go-task-manager/pkg/config"
-
 )
 
 func NewApp(config *config.Config) (httpServer *gin.Engine) {
@@ -31,6 +30,7 @@ func NewApp(config *config.Config) (httpServer *gin.Engine) {
 	})
 
 	// routes
+	routes.AdminRoutes(httpServer)
 	routes.UserRoutes(httpServer)
 	return httpServer
 }

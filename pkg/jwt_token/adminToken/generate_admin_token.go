@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const SecretKeyAdmin = "JYUIiy@i$uhiJKH^$M)&NKJHju*g(JL_)GR#%)MLKHjj)saQED"
+const SecretKeyAdmin = "JYUIiy@i$uhiJKH^$M)&NKJHju*g(JL_)GR#%)MLKHjjsaQED"
 
 type AdminClaims struct {
 	UUID      string `json:"uuid"`
@@ -17,7 +17,7 @@ type AdminClaims struct {
 	jwt.StandardClaims
 }
 
-func GenerateAdminToken(adminID int, adminRole string) (*string, error) {
+func GenerateAdminToken(adminID int, adminRole string) (string, error) {
 	expirationTime := time.Now().Add(3 * time.Hour)
 	newUUID := uuid.New().String()
 	adminClaims := AdminClaims{
@@ -33,9 +33,9 @@ func GenerateAdminToken(adminID int, adminRole string) (*string, error) {
 	tokenString, err := token.SignedString([]byte(SecretKeyAdmin))
 	if err != nil {
 		// Return the error properly
-		return nil, err
+		return "", err
 	}
-	return &tokenString, nil
+	return tokenString, nil
 }
 
 func ValidateAdminToken(adminTokenString string) (*AdminClaims, error) {

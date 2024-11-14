@@ -18,7 +18,10 @@ func NewAdminRepository(db *gorm.DB) AdminRepository {
 
 func (adminRepo adminRepositoryImp) GetAll() ([]models.Admin, error) {
 	var admins []models.Admin
-	if err := adminRepo.DB.Where("admin_role=?", "admin").Select("firstname", "lastname", "admin_role", "email").Find(&admins).Error; err != nil {
+	if err := adminRepo.DB.Where("admin_role=?", "admin").
+		Select("id", "firstname", "lastname", "admin_role", "email", "created_at", "updated_at", "last_login").
+		Order("id desc").
+		Find(&admins).Error; err != nil {
 		return nil, err
 	}
 	return admins, nil
@@ -26,7 +29,7 @@ func (adminRepo adminRepositoryImp) GetAll() ([]models.Admin, error) {
 
 func (adminRepo adminRepositoryImp) GetOne(adminID int) (*models.Admin, error) {
 	var admin models.Admin
-	if err := adminRepo.DB.First(&admin, adminID).Error; err != nil {
+	if err := adminRepo.DB.Where("admin_role = ?", "admin").First(&admin, adminID).Error; err != nil {
 		return nil, err
 	}
 	return &admin, nil
