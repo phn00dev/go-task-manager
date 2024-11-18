@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-
 )
 
 type Config struct {
@@ -32,11 +31,11 @@ type httpServer struct {
 
 func GetConfig() (*Config, error) {
 	// .env faýlyny yüklemek
-	if err := godotenv.Load(); err != nil {
+	if err := godotenv.Load("../.env"); err != nil {
 		return nil, errors.New("error loading .env file")
 	}
 
-	dbconfig := dbConfig{
+	dbcfg := dbConfig{
 		DbHost:     os.Getenv("DB_HOST"),
 		DbPort:     os.Getenv("DB_PORT"),
 		DbUser:     os.Getenv("DB_USER"),
@@ -54,7 +53,7 @@ func GetConfig() (*Config, error) {
 	}
 
 	return &Config{
-		DbConfig:   dbconfig,
+		DbConfig:   dbcfg,
 		HttpServer: httpServerConfig,
 	}, nil
 }
