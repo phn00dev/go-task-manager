@@ -8,7 +8,7 @@ import (
 type UserService interface {
 	//admin for user services
 	GetAll() ([]models.User, error)
-	Getone(userID int) (*models.User, error)
+	GetOne(userID int) (*models.User, error)
 	GetProfile(userID int) (*dto.UserResponse, error)
 	UpdateUser(userID int, updateRequest dto.UpdateUserRequest) error
 	UpdateUserPassword(userID int, request dto.UpdateUserPassword) error

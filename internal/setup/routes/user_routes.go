@@ -11,11 +11,12 @@ func UserRoutes(route *gin.Engine) {
 	v1 := route.Group("/v1/api")
 	{
 		// auth routes
-		// authRoute := v1.Group("/auth")
-		// {
-		// 	authRoute.POST("/register", authConstructor.AuthHandler.Register)
-		// 	authRoute.POST("/register", authConstructor.AuthHandler.Login)
-		// }
+		//authRoute := v1.Group("/auth")
+		//{
+		//	authRoute.POST("/register", authConstructor.AuthHandler.Register)
+		//	authRoute.POST("/register", authConstructor.AuthHandler.Login)
+		//}
+
 		// user profile routes
 		userRoute := v1.Group("/user")
 		{
@@ -24,6 +25,7 @@ func UserRoutes(route *gin.Engine) {
 			userRoute.GET("/update-password", userConstructor.UserHandler.UpdatePassword)
 			userRoute.GET("/delete-profile", userConstructor.UserHandler.DeleteProfile)
 		}
+
 		teamRoute := v1.Group("/teams")
 		{
 			teamRoute.GET("/", constructor.TeamHandler.GetAll)

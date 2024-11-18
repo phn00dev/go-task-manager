@@ -2,10 +2,11 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	teamConstructor "github.com/phn00dev/go-task-manager/internal/domain/team/constructor"
-	adminMiddleware "github.com/phn00dev/go-task-manager/internal/middleware/admin_middleware"
-
 	adminConstructor "github.com/phn00dev/go-task-manager/internal/domain/admin/constructor"
+	teamConstructor "github.com/phn00dev/go-task-manager/internal/domain/team/constructor"
+	todoConstructor "github.com/phn00dev/go-task-manager/internal/domain/todo/constructor"
+	userConstructor "github.com/phn00dev/go-task-manager/internal/domain/user/constructor"
+	adminMiddleware "github.com/phn00dev/go-task-manager/internal/middleware/admin_middleware"
 )
 
 func AdminRoutes(route *gin.Engine) {
@@ -33,14 +34,21 @@ func AdminRoutes(route *gin.Engine) {
 			teamRoute.PUT("/:teamID", teamConstructor.TeamHandler.Update)
 			teamRoute.DELETE("/:teamID", teamConstructor.TeamHandler.Delete)
 		}
-		//todoRoute := v1a.Group("/todos")
-		//{
-		//	todoRoute.Use(adminMiddleware.AdminMiddleware())
-		//	todoRoute.GET("/", todoConstructor.TodoHandler.GetAll)
-		//	todoRoute.GET("/:todoID", todoConstructor.TodoHandler.GetOne)
-		//	todoRoute.POST("/create", todoConstructor.TodoHandler.Create)
-		//	todoRoute.PUT("/:todoID", todoConstructor.TodoHandler.Update)
-		//	todoRoute.DELETE("/:todoID", todoConstructor.TodoHandler.Delete)
-		//}
+
+		userRoute := v1a.Group("/users")
+		{
+			userRoute.GET("/", userConstructor.UserHandler.GetAll)
+			userRoute.GET("/:userID", userConstructor.UserHandler.GetOne)
+		}
+
+		todoRoute := v1a.Group("/todos")
+		{
+			todoRoute.Use(adminMiddleware.AdminMiddleware())
+			todoRoute.GET("/", todoConstructor.TodoHandler.GetAll)
+			todoRoute.GET("/:todoID", todoConstructor.TodoHandler.GetOne)
+			todoRoute.POST("/create", todoConstructor.TodoHandler.Create)
+			todoRoute.PUT("/:todoID", todoConstructor.TodoHandler.Update)
+			todoRoute.DELETE("/:todoID", todoConstructor.TodoHandler.Delete)
+		}
 	}
 }

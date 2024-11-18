@@ -7,7 +7,6 @@ import (
 	"github.com/phn00dev/go-task-manager/internal/domain/user/repository"
 	"github.com/phn00dev/go-task-manager/internal/models"
 	passwordhash "github.com/phn00dev/go-task-manager/internal/utils/password_hash"
-
 )
 
 type userServiceImp struct {
@@ -28,11 +27,11 @@ func (userService userServiceImp) GetAll() ([]models.User, error) {
 	return users, nil
 }
 
-func (userService userServiceImp) Getone(userID int) (*models.User, error) {
+func (userService userServiceImp) GetOne(userID int) (*models.User, error) {
 	if userID == 0 {
 		return nil, errors.New("user ID must not be zero")
 	}
-	user, err := userService.userRepo.GetOne(userID)
+	user, err := userService.userRepo.GetUserByID(userID)
 	if err != nil {
 		return nil, err
 	}
@@ -82,15 +81,11 @@ func (userService userServiceImp) UpdateUserPassword(userID int, request dto.Upd
 	if err != nil {
 		return err
 	}
-	// check password
-	if err := passwordhash.CheckPasswordHash(request.OldPassword, user.PasswordHash); err != nil {
+	if err = passwordhash.CheckPasswordHash(request.OldPassword, user.PasswordHash); err != nil {
 		return errors.New("old password wrong")
 	}
-
-	// hash password generate
-	hashPassword := passwordhash.GeneratePassword(request.Password)
-	// update password
-	return userService.userRepo.UpdatePassword(user.ID, hashPassword)
+	user.PasswordHash = passwordhash.GeneratePassword(request.Password)
+	return userService.userRepo.Update(user.ID, *user)
 
 }
 
