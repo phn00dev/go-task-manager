@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/phn00dev/go-task-manager/internal/constants"
 	"time"
+
+	"github.com/phn00dev/go-task-manager/internal/constants"
 )
 
 type Team struct {

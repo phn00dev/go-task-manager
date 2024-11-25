@@ -1,15 +1,18 @@
 package dto
 
-import "github.com/phn00dev/go-task-manager/internal/models"
+import (
+	"github.com/phn00dev/go-task-manager/internal/constants"
+	"github.com/phn00dev/go-task-manager/internal/models"
+)
 
 type TeamResponse struct {
-	ID         int      `json:"id"`
-	TeamName   string   `json:"team_name"`
-	TeamStatus string   `json:"team_status"`
-	AdminID    int      `json:"admin_id"`
-	CreatedAt  string   `json:"created_at"`
-	UpdatedAt  string   `json:"updated_at"`
-	TeamLead   TeamLead `json:"team_lead"`
+	ID         int              `json:"id"`
+	TeamName   string           `json:"team_name"`
+	TeamStatus constants.Status `json:"team_status"`
+	AdminID    int              `json:"admin_id"`
+	CreatedAt  string           `json:"created_at"`
+	UpdatedAt  string           `json:"updated_at"`
+	TeamLead   TeamLead         `json:"team_lead"`
 }
 
 type TeamLead struct {
@@ -43,12 +46,12 @@ func GetOneTeamResponse(team *models.Team) *TeamResponse {
 }
 
 type AllTeamResponse struct {
-	ID         int    `json:"id"`
-	TeamName   string `json:"team_name"`
-	TeamStatus string `json:"team_status"`
-	AdminID    int    `json:"admin_id"`
-	CreatedAt  string `json:"created_at"`
-	UpdatedAt  string `json:"updated_at"`
+	ID         int              `json:"id"`
+	TeamName   string           `json:"team_name"`
+	TeamStatus constants.Status `json:"team_status"`
+	AdminID    int              `json:"admin_id"`
+	CreatedAt  string           `json:"created_at"`
+	UpdatedAt  string           `json:"updated_at"`
 }
 
 func GetAllTeamResponses(teams []models.Team) []AllTeamResponse {
